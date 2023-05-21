@@ -14,7 +14,7 @@ watch(
   () => {
     if (userApi.value !== "") {
       showMainMenu.value = true;
-    } else if (route.path === "/setting") {
+    } else if (route.name === "setting") {
       showMainMenu.value = true;
     } else {
       showMainMenu.value = false;
