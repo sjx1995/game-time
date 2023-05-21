@@ -3,10 +3,14 @@
  * @Author: Sunly
  * @Date: 2023-05-15 06:19:50
 -->
+<script lang="ts" setup>
+const router = useRouter();
+</script>
+
 <template>
-  <div class="text-center overflow-hidden">
-    <h1 class="text-4xl mt-10 font-bold text-slate-800">Hello World</h1>
+  <div class="px-10 py-6">
+    <CommonIButton @click="() => router.push('/player')">
+      查看玩家信息
+    </CommonIButton>
   </div>
 </template>
-
-<script lang="ts" setup></script>

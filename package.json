@@ -20,6 +20,10 @@
     "tailwindcss": "^3.3.2"
   },
   "dependencies": {
+    "@headlessui/vue": "^1.7.13",
+    "@heroicons/vue": "^2.0.18",
+    "@vueuse/nuxt": "^10.1.2",
+    "axios": "^1.4.0",
     "nuxt-icons": "^3.2.1"
   },
   "engines": {
