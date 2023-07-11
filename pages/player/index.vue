@@ -43,7 +43,7 @@ const handleClickPlayer = (info: any) => {
 
     <div class="search-player-title">查询新玩家信息</div>
     <v-text-field
-      label="请输入要查询玩家的64位ID"
+      label="玩家的64位ID"
       v-model:model-value="steam64id"
     ></v-text-field>
 

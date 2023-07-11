@@ -46,7 +46,7 @@ const handleToHome = () => {
 
     <v-text-field
       class="mb-8"
-      label="请输入 Steam WEB API"
+      label="Steam WEB API"
       v-model:model-value="mySteamWebApi"
     ></v-text-field>
 
