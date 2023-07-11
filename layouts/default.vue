@@ -50,7 +50,7 @@ router.beforeEach((to, from, next) => {
       Powered by Nuxt 🌈 Sunly
       {{
         "2023" +
-        (new Date().getFullYear() > 2023
+        (new Date().getFullYear() <= 2023
           ? ""
           : " - " + new Date().getFullYear())
       }}
