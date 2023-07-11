@@ -14,6 +14,11 @@ const route = useRoute();
     <v-app-bar-title>GAME TIME</v-app-bar-title>
     <v-spacer></v-spacer>
 
+    <NuxtLink to="https://github.com/sjx1995/game-time" target="_blank">
+      <v-btn class="mr-2" prepend-icon="mdi-github" variant="tonal">
+        GITHUB
+      </v-btn>
+    </NuxtLink>
     <v-btn
       v-show="route.path !== '/setting'"
       prepend-icon="mdi-cog-outline"
