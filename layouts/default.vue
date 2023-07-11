@@ -47,10 +47,10 @@ router.beforeEach((to, from, next) => {
       <slot />
     </main>
     <footer>
-      Powered by Nuxt ❤️ Sunly
+      Powered by Nuxt 🌈 Sunly
       {{
         "2023" +
-        (new Date().getFullYear() === 2023
+        (new Date().getFullYear() > 2023
           ? ""
           : " - " + new Date().getFullYear())
       }}
