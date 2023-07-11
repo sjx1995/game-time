@@ -4,6 +4,10 @@
  * @Date: 2023-05-21 14:05:15
 -->
 <script lang="ts" setup>
+import { error } from "console";
+import { transMinToHour } from "~/utils";
+import { StorageNames } from "~/utils/enums";
+
 const route = useRoute();
 const router = useRouter();
 
@@ -19,6 +23,7 @@ const gameTimeData = reactive<{
       name: string;
       recentTime: number;
       allTime: number;
+      appid: number;
     }[];
   };
 }>({
@@ -31,12 +36,8 @@ const gameTimeData = reactive<{
     games: [],
   },
 });
-onMounted(async () => {
-  gameTimeData.isLoading = true;
-  const key = localStorage.getItem("my-steam-web-api");
-  if (!key) {
-    return;
-  }
+
+const getRecentTime = async (key: string) => {
   try {
     const data = await useFetch("/api/game-time/recent", {
       params: {
@@ -44,16 +45,21 @@ onMounted(async () => {
         steamid: steam64Id,
       },
     });
-    console.log(data.data.value);
     if (data.data.value?.success) {
+      if (data.data.value.data.total_count === 0) {
+        gameTimeData.isSuccess = false;
+        gameTimeData.errorMessage = "该用户近两周没有游戏记录";
+        return;
+      }
       let totalTime = 0;
       const games = data.data.value.data.games.map(
-        ({ name, playtime_2weeks, playtime_forever }) => {
+        ({ name, playtime_2weeks, playtime_forever, appid }) => {
           totalTime += playtime_2weeks;
           return {
             name,
             recentTime: playtime_2weeks,
             allTime: playtime_forever,
+            appid,
           };
         }
       );
@@ -65,8 +71,7 @@ onMounted(async () => {
       gameTimeData.isSuccess = true;
     } else {
       gameTimeData.isSuccess = false;
-      gameTimeData.errorMessage = "请求失败";
-      console.log("err", gameTimeData);
+      gameTimeData.errorMessage = "请求近两周游戏记录失败";
     }
   } catch (error: any) {
     gameTimeData.isSuccess = false;
@@ -74,59 +79,125 @@ onMounted(async () => {
   } finally {
     gameTimeData.isLoading = false;
   }
+};
+
+const playerInfo = reactive<{
+  avatar: string;
+  name: string;
+  playingGame: string;
+  onlineStatus: number;
+  lastOnline: number;
+  recentTime: number;
+  isSuccess: boolean;
+  isLoading: boolean;
+  errorMessage: string;
+}>({
+  avatar: "",
+  name: "",
+  playingGame: "",
+  onlineStatus: 0,
+  lastOnline: 0,
+  recentTime: 0,
+  isSuccess: false,
+  isLoading: true,
+  errorMessage: "",
 });
+
+const getPlayerInfo = async (key: string) => {
+  try {
+    const data = await useFetch("/api/players/info", {
+      params: {
+        key,
+        ids: steam64Id,
+      },
+    });
+    if (data.data.value?.success && data.data.value.data.players.length > 0) {
+      const info = data.data.value.data.players[0];
+      playerInfo.avatar = info.avatarfull;
+      playerInfo.name = info.personaname;
+      playerInfo.playingGame = info.gameextrainfo || "";
+      playerInfo.onlineStatus = info.personastate;
+      playerInfo.lastOnline = info.lastlogoff * 1000;
+      playerInfo.isSuccess = true;
+    } else {
+      playerInfo.isSuccess = false;
+      playerInfo.errorMessage = "获取用户信息失败";
+    }
+  } catch (error: any) {
+    playerInfo.isSuccess = false;
+    playerInfo.errorMessage = error.message;
+  } finally {
+    playerInfo.isLoading = false;
+  }
+};
+
+onMounted(async () => {
+  gameTimeData.isLoading = true;
+  const key = localStorage.getItem(StorageNames.WEB_API_KEY);
+  if (!key) {
+    return;
+  }
+
+  getRecentTime(key);
+  getPlayerInfo(key);
+});
+
+const formatGameTimeText = (recentTime: number, allTime: number) => {
+  return `近两周游戏时长: ${transMinToHour(recentTime)}
+  \u00a0
+  总游戏时长: ${transMinToHour(allTime)}`;
+};
 </script>
 
 <template>
-  <div class="px-10 py-8">
-    <CommonIButton @click="() => router.push('/player')">返回</CommonIButton>
-    <CommonICard
-      v-if="!gameTimeData.isLoading && gameTimeData.isSuccess"
-      :title="`${route.params.userId} 的近两周游戏时长: ${gameTimeData.data.totalTime} 分钟`"
-    >
-      <div>
-        <div class="text-lg">
-          <span v-if="gameTimeData.data.totalTime > 60">
-            近两周总游戏时长
-            {{ Math.floor(gameTimeData.data.totalTime / 60) }}小时{{
-              gameTimeData.data.totalTime % 60
-            }}分钟，
-          </span>
-          近两周平均
-          {{ gameTimeData.data.perDayTime }}分钟/天
-          <span v-if="gameTimeData.data.perDayTime > 60">
-            (
-            {{ Math.floor(gameTimeData.data.perDayTime / 60) }}小时{{
-              gameTimeData.data.perDayTime % 60
-            }}分钟/天 )
-          </span>
-        </div>
-        <div v-for="item in gameTimeData.data.games" class="leading-10 text-xl">
-          <div class="font-bold text-2xl mt-8 leading-10">{{ item.name }}</div>
-          <div>
-            近两周游戏时长：
-            <span class="font-bold"> {{ item.recentTime }} </span>
-            分钟
-            <span v-if="item.recentTime > 60">
-              ({{ Math.floor(item.recentTime / 60) }}小时{{
-                item.recentTime % 60
-              }}分钟)
-            </span>
-          </div>
-          <div>
-            总游戏时长：
-            <span class="font-bold"> {{ item.allTime }} </span>
-            分钟
-            <span v-if="item.allTime > 60">
-              ({{ Math.floor(item.allTime / 60) }}小时{{
-                item.allTime % 60
-              }}分钟)
-            </span>
-          </div>
-        </div>
-      </div>
-    </CommonICard>
-    <div v-else-if="gameTimeData.isLoading">加载中...</div>
-    <div>{{ gameTimeData.errorMessage }}</div>
+  <v-btn
+    class="mb-8"
+    prepend-icon="mdi-arrow-left"
+    variant="tonal"
+    @click="() => router.push('/player')"
+  >
+    返回
+  </v-btn>
+
+  <div v-if="gameTimeData.isLoading || playerInfo.isLoading">
+    <LoadingComponent />
   </div>
+
+  <template v-else>
+    <PlayerInfoCard
+      v-if="playerInfo.isSuccess"
+      class="mb-2"
+      :avatar="playerInfo.avatar"
+      :name="playerInfo.name"
+      :playingGame="playerInfo.playingGame"
+      :onlineStatus="playerInfo.onlineStatus"
+      :lastOnline="playerInfo.lastOnline"
+      :recentTime="gameTimeData.data.totalTime"
+    />
+    <v-alert
+      v-else
+      title="没有数据"
+      :text="gameTimeData.errorMessage"
+      type="warning"
+      variant="outlined"
+    ></v-alert>
+
+    <template v-if="gameTimeData.isSuccess">
+      <GameInfoCard
+        class="mb-2"
+        v-for="item in gameTimeData.data.games"
+        :key="item.name"
+        :title="item.name"
+        :content="formatGameTimeText(item.recentTime, item.allTime)"
+        :appid="item.appid"
+      />
+    </template>
+    <v-alert
+      v-else
+      title="没有数据"
+      :text="gameTimeData.errorMessage"
+      type="warning"
+      variant="outlined"
+    ></v-alert>
+  </template>
 </template>

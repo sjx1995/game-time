@@ -8,9 +8,10 @@ const router = useRouter();
 </script>
 
 <template>
-  <div class="px-10 py-6">
-    <CommonIButton @click="() => router.push('/player')">
-      查看玩家信息
-    </CommonIButton>
-  </div>
+  <HomeCard
+    title="玩家信息"
+    content="获取玩家游戏时间等"
+    icon="mdi-account-outline"
+    @click="() => router.push('/player')"
+  />
 </template>

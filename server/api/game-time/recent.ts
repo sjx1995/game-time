@@ -18,16 +18,16 @@ type IGameTimeDetail = {
 
 type IGetRecentGameTime =
   | {
-      success: boolean;
-      data: {
-        total_count: number;
-        games: IGameTimeDetail[];
-      };
-    }
-  | {
-      success: false;
-      errorMessage: string;
+    success: boolean;
+    data: {
+      total_count: number;
+      games: IGameTimeDetail[];
     };
+  }
+  | {
+    success: false;
+    errorMessage: string;
+  };
 
 export default defineEventHandler(
   async (event): Promise<IGetRecentGameTime> => {

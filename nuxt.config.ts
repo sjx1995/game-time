@@ -5,12 +5,18 @@
  */
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  css: ["~/assets/css/main.css"],
+  css: [
+    "vuetify/lib/styles/main.sass",
+    "~/assets/css/main.scss",
+    // "@mdi/font/css/materialdesignicons.min.css",
+  ],
   postcss: {
     plugins: {
-      tailwindcss: {},
       autoprefixer: {},
     },
+  },
+  build: {
+    transpile: ["vuetify"],
   },
   typescript: {
     shim: false,
@@ -19,6 +25,9 @@ export default defineNuxtConfig({
   vite: {
     esbuild: {
       drop: ["console", "debugger"],
+    },
+    define: {
+      "process.env.DEBUG": false,
     },
   },
 });

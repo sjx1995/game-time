@@ -1,6 +1,6 @@
 {
-  "name": "nuxt-app",
-  "version": "1.0.0",
+  "name": "game-time",
+  "version": "1.1.0",
   "author": {
     "name": "Sunly",
     "url": "https://github.com/sjx1995"
@@ -10,21 +10,26 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "version": "node ./gen-version.js"
   },
   "devDependencies": {
+    "@mdi/font": "^7.2.96",
+    "@nuxtjs/style-resources": "^1.2.1",
+    "@sunly95/gen-version": "^1.0.3",
     "@types/node": "^18",
     "autoprefixer": "^10.4.14",
     "nuxt": "^3.4.3",
     "postcss": "^8.4.23",
-    "tailwindcss": "^3.3.2"
+    "vite-plugin-vuetify": "^1.0.2"
   },
   "dependencies": {
-    "@headlessui/vue": "^1.7.13",
-    "@heroicons/vue": "^2.0.18",
     "@vueuse/nuxt": "^10.1.2",
-    "axios": "^1.4.0",
-    "nuxt-icons": "^3.2.1"
+    "axios": "latest",
+    "nuxt-icons": "^3.2.1",
+    "sass": "^1.63.6",
+    "sass-loader": "^13.3.2",
+    "vuetify": "latest"
   },
   "engines": {
     "node": "^18.16.0",

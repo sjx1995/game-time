@@ -9,19 +9,26 @@ const route = useRoute();
 </script>
 
 <template>
-  <div class="h-16 leading-[4] bg-slate-200 flex justify-between">
-    <div class="w-28 text-center">
-      <NuxtLink to="/">
-        <div>Steam Info</div>
-      </NuxtLink>
-    </div>
-    <div>
-      <CommonIButton v-if="route.path !== '/'" @click="() => router.push('/')">
-        返回首页
-      </CommonIButton>
-      <CommonIButton @click="() => router.push('/setting')">
-        设置
-      </CommonIButton>
-    </div>
-  </div>
+  <v-app-bar scroll-behavior="hide" rounded class="header">
+    <img src="~/assets/images/logo.png" width="48" height="48" />
+    <v-app-bar-title>Steam-Info</v-app-bar-title>
+    <v-spacer></v-spacer>
+
+    <v-btn
+      v-show="route.path !== '/setting'"
+      prepend-icon="mdi-cog-outline"
+      variant="tonal"
+      @click="() => router.push('/setting')"
+    >
+      设置
+    </v-btn>
+  </v-app-bar>
 </template>
+
+<style lang="scss" scoped>
+.header {
+  img {
+    margin-left: 16px;
+  }
+}
+</style>
