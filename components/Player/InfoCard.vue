@@ -26,7 +26,27 @@ defineProps<{
       </div>
       <div class="player-extra-info">
         <div>
-          <span class="status-circle"></span>
+          <span class="status-circle">
+            {{
+              playingGame !== ""
+                ? "🎮 "
+                : onlineStatus === 0
+                ? "👻 "
+                : onlineStatus === 1
+                ? "🟢 "
+                : onlineStatus === 2
+                ? "🔴 "
+                : onlineStatus === 3
+                ? "🔴 "
+                : onlineStatus === 4
+                ? "😴 "
+                : onlineStatus === 5
+                ? "💰 "
+                : onlineStatus === 6
+                ? "👋 "
+                : ""
+            }}
+          </span>
           <span>{{
             onlineStatus === 0
               ? `${onlineStatusText[0]} 上次在线 ${formatTime(
