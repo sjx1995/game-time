@@ -11,7 +11,7 @@ const route = useRoute();
 <template>
   <v-app-bar scroll-behavior="hide" rounded class="header">
     <img src="~/assets/images/logo.png" width="48" height="48" />
-    <v-app-bar-title>Steam-Info</v-app-bar-title>
+    <v-app-bar-title>GAME TIME</v-app-bar-title>
     <v-spacer></v-spacer>
 
     <v-btn
