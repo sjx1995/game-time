@@ -9,7 +9,7 @@
 
 查询steam信息
 
-[预览地址](https://game-time.sunly.in/)
+[预览地址](https://gametime.sunly.in/)
 
 ## 实现功能
 
