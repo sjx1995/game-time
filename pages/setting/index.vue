@@ -5,15 +5,18 @@
 -->
 <script lang="ts" setup>
 import { StorageNames } from "~/utils/enums";
+import { useAppStore } from "~/store/app";
+
+const appStore = useAppStore();
+const router = useRouter();
 
 const mySteamWebApi = useLocalStorage(StorageNames.WEB_API_KEY, "");
-
-const router = useRouter();
 
 const showSnackbar = ref(false);
 const handleToHome = () => {
   if (mySteamWebApi.value === "") {
     showSnackbar.value = true;
+    appStore.shackBody();
     return;
   }
   router.push("/");

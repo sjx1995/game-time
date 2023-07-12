@@ -5,14 +5,23 @@
 -->
 <script lang="ts" setup>
 import { StorageNames } from "~/utils/enums";
+import { useAppStore } from "~/store/app";
+
+const appStore = useAppStore();
+const router = useRouter();
+
 const recentSearchIds = useLocalStorage<string[]>(
   StorageNames.RECENT_USER_IDS,
   []
 );
 
-const router = useRouter();
 const steam64id = ref("");
 const handleQuery2WeekGameTime = () => {
+  if (steam64id.value === "") {
+    appStore.shackBody();
+    return;
+  }
+
   const idx = recentSearchIds.value.findIndex(
     (item) => item === steam64id.value
   );
@@ -51,7 +60,6 @@ const handleClickPlayer = (info: any) => {
       class="mb-8"
       prepend-icon="mdi-account-search-outline"
       variant="tonal"
-      :disabled="!steam64id"
       @click="handleQuery2WeekGameTime"
     >
       查询玩家信息

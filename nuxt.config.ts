@@ -21,7 +21,10 @@ export default defineNuxtConfig({
   typescript: {
     shim: false,
   },
-  modules: ["nuxt-icons", "@vueuse/nuxt"],
+  modules: ["nuxt-icons", "@vueuse/nuxt", "@pinia/nuxt"],
+  pinia: {
+    autoImports: ["appStore"],
+  },
   vite: {
     esbuild: {
       drop: ["console", "debugger"],

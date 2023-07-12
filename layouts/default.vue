@@ -5,8 +5,11 @@
 -->
 <script lang="ts" setup>
 import { StorageNames } from "~/utils/enums";
+import { useAppStore } from "~/store/app";
+
 const router = useRouter();
 const route = useRoute();
+const appStore = useAppStore();
 
 const userApi = useLocalStorage(StorageNames.WEB_API_KEY, "");
 const showLoading = ref(true);
@@ -35,7 +38,7 @@ router.beforeEach((to, from, next) => {
 
 <template>
   <LoadingPage v-if="showLoading" />
-  <v-app>
+  <v-app :class="{ shake: appStore.isShackBody }">
     <Header />
     <main class="mt-16 px-10 pt-6">
       <v-alert
@@ -70,5 +73,32 @@ footer {
   line-height: 40px;
   text-align: center;
   color: #aaa;
+}
+.shake {
+  animation: shake-animation 0.62s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+  animation-iteration-count: 1;
+}
+
+@keyframes shake-animation {
+  10%,
+  90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+
+  20%,
+  80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%,
+  50%,
+  70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%,
+  60% {
+    transform: translate3d(4px, 0, 0);
+  }
 }
 </style>

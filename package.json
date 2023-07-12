@@ -24,9 +24,11 @@
     "vite-plugin-vuetify": "^1.0.2"
   },
   "dependencies": {
+    "@pinia/nuxt": "^0.4.11",
     "@vueuse/nuxt": "^10.1.2",
     "axios": "latest",
     "nuxt-icons": "^3.2.1",
+    "pinia": "^2.1.4",
     "sass": "^1.63.6",
     "sass-loader": "^13.3.2",
     "vuetify": "latest"
