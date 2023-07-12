@@ -5,11 +5,20 @@
 -->
 <script lang="ts" setup>
 import { formatTime } from "~/utils/index";
+
 const config = useRuntimeConfig();
 const {
   public: { buildTime },
 } = config;
-console.log(buildTime, new Date().getTime() - buildTime);
+const buildTimeText = ref("");
+const computedBuildTime = () => {
+  buildTimeText.value = formatTime(~~(new Date().getTime() - buildTime));
+};
+computedBuildTime();
+const timer = setInterval(computedBuildTime, 60 * 1000);
+onUnmounted(() => {
+  clearInterval(timer);
+});
 </script>
 
 <template>
@@ -24,9 +33,8 @@ console.log(buildTime, new Date().getTime() - buildTime);
       }}
     </div>
     <div class="build-time">
-      网站构建于
-      {{ formatTime(~~(new Date().getTime() - buildTime)) }}
-      前
+      构建于
+      {{ buildTimeText === "0分钟" ? "刚刚" : `${buildTimeText} 前` }}
     </div>
   </footer>
 </template>

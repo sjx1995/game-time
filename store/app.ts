@@ -18,6 +18,9 @@ export const useAppStore = defineStore({
   actions: {
     // 显示snackbar
     showSnackbar(msg: string, color = "error") {
+      if (this.snackbar.visible) {
+        return;
+      }
       this.snackbar.message = msg;
       this.snackbar.color = color;
       this.snackbar.visible = true;

@@ -27,7 +27,7 @@
     width: 56px;
     height: 56px;
     position: absolute;
-    animation: infinityRotate-cc22637a 0.6s ease-in-out infinite;
+    animation: infinityRotate 0.6s ease-in-out infinite;
   }
 }
 
