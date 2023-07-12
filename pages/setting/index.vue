@@ -12,10 +12,9 @@ const router = useRouter();
 
 const mySteamWebApi = useLocalStorage(StorageNames.WEB_API_KEY, "");
 
-const showSnackbar = ref(false);
 const handleToHome = () => {
   if (mySteamWebApi.value === "") {
-    showSnackbar.value = true;
+    appStore.showSnackbar("请先输入你的Steam Web API");
     appStore.shackBody();
     return;
   }
@@ -24,10 +23,6 @@ const handleToHome = () => {
 </script>
 
 <template>
-  <v-snackbar v-model="showSnackbar" location="top" color="error">
-    请填写 Steam Web API
-  </v-snackbar>
-
   <div>
     <v-btn
       class="mb-8"

@@ -18,6 +18,7 @@ const recentSearchIds = useLocalStorage<string[]>(
 const steam64id = ref("");
 const handleQuery2WeekGameTime = () => {
   if (steam64id.value === "") {
+    appStore.showSnackbar("请输入玩家的64位ID");
     appStore.shackBody();
     return;
   }
