@@ -38,6 +38,7 @@ router.beforeEach((to, from, next) => {
 
 <template>
   <LoadingPage v-if="showLoading" />
+  <TopSnackbar />
   <v-app :class="{ shake: appStore.isShackBody }">
     <Header />
     <main class="mt-16 px-10 pt-6">
