@@ -25,6 +25,11 @@ export default defineNuxtConfig({
   pinia: {
     autoImports: ["appStore"],
   },
+  runtimeConfig: {
+    public: {
+      buildTime: new Date().getTime()
+    }
+  },
   vite: {
     esbuild: {
       drop: ["console", "debugger"],

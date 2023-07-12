@@ -50,15 +50,7 @@ router.beforeEach((to, from, next) => {
       ></v-alert>
       <slot />
     </main>
-    <footer>
-      Powered by Nuxt 🌈 Sunly
-      {{
-        "2023" +
-        (new Date().getFullYear() <= 2023
-          ? ""
-          : " - " + new Date().getFullYear())
-      }}
-    </footer>
+    <Footer />
   </v-app>
 </template>
 
@@ -67,13 +59,7 @@ main {
   max-width: 1000px;
   width: 100%;
   margin: 0 auto;
-  min-height: calc(100vh - 64px - 24px - 40px);
-}
-footer {
-  height: 40px;
-  line-height: 40px;
-  text-align: center;
-  color: #aaa;
+  min-height: calc(100vh - 64px - 80px - 24px);
 }
 .shake {
   animation: shake-animation 0.62s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
