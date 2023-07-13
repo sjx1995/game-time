@@ -45,7 +45,7 @@ footer {
   margin-top: 60px;
   text-align: center;
   line-height: 40px;
-  color: #aaa;
+  color: #bbb;
   .sub-text {
     font-size: 14px;
     line-height: 24px;

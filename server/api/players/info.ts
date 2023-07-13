@@ -37,6 +37,7 @@ type IGetPlayerList =
 
 export default defineEventHandler(async (event): Promise<IGetPlayerList> => {
   try {
+    console.log("process环境变量", process.env, process.env.STEAM_KEY);
     const { key, ids } = getQuery(event);
     if (!key) throw new Error("参数错误，请点击右上角配置steam web api");
     if (!(ids && (ids as Array<string>).length))
