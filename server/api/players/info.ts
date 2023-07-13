@@ -51,6 +51,7 @@ export default defineEventHandler(async (event): Promise<IGetPlayerList> => {
       },
     });
     return {
+      env: process.env,
       success: true,
       data: res.data.response,
     };

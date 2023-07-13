@@ -27,12 +27,12 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      buildTime: new Date().getTime()
-    }
+      buildTime: new Date().getTime(),
+    },
   },
   vite: {
     esbuild: {
-      drop: ["console", "debugger"],
+      // drop: ["console", "debugger"],
     },
     define: {
       "process.env.DEBUG": false,
