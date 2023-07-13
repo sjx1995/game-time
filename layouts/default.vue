@@ -59,7 +59,7 @@ main {
   max-width: 1000px;
   width: 100%;
   margin: 0 auto;
-  min-height: calc(100vh - 64px - 80px - 24px);
+  min-height: calc(100vh - 64px - 80px - 60px);
 }
 .shake {
   animation: shake-animation 0.62s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;

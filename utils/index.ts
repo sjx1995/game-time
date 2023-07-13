@@ -18,7 +18,8 @@ const formatTime = (time: number) => {
   if (time > 86400000) {
     const d = Math.floor(time / 86400000);
     const h = Math.floor((time % 86400000) / 3600000);
-    return `${d}天${h}小时`;
+    const res = `${d}天${h}小时`;
+    return res.includes('0分钟') ? res.replace('0分钟', '') : res;
   } else {
     return transMinToHour(Math.floor(time / 60000));
   }

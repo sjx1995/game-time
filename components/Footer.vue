@@ -24,7 +24,7 @@ onUnmounted(() => {
 <template>
   <footer>
     <div>
-      Powered by Nuxt 🌈 Sunly
+      Sunly 🌈
       {{
         "2023" +
         (new Date().getFullYear() <= 2023
@@ -32,8 +32,8 @@ onUnmounted(() => {
           : " - " + new Date().getFullYear())
       }}
     </div>
-    <div class="build-time">
-      构建于
+    <div class="sub-text">
+      Powered by Nuxt · 构建于
       {{ buildTimeText === "0分钟" ? "刚刚" : `${buildTimeText} 前` }}
     </div>
   </footer>
@@ -42,11 +42,11 @@ onUnmounted(() => {
 <style lang="scss" scoped>
 footer {
   height: 80px;
-  margin-top: 24px;
+  margin-top: 60px;
   text-align: center;
   line-height: 40px;
   color: #aaa;
-  .build-time {
+  .sub-text {
     font-size: 14px;
     line-height: 24px;
   }
