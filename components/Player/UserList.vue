@@ -40,6 +40,7 @@ const getPlayerList = async () => {
         ids: recentSearchIds.value,
       },
     });
+    console.log("user list data", data.data.value);
     if (data.data.value?.success) {
       const playerList = data.data.value.data.players;
       console.log(playerList);
