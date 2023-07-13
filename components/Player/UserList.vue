@@ -31,6 +31,7 @@ const getPlayerList = async () => {
         ids: recentSearchIds.value,
       },
     });
+    console.log("user list", data.data.value);
     if (data.data.value?.success) {
       const playerList = data.data.value.data.players;
       console.log(playerList);
@@ -56,19 +57,22 @@ const emits = defineEmits<{
 </script>
 
 <template>
-  <div>
-    <div class="player-list-title">最近查询玩家</div>
-    <LoadingComponent v-if="playerListData.isLoading" />
-    <div
-      class="player-card"
-      v-for="info of playerListData.players"
-      @click="emits('clickPlayer', info)"
-    >
-      <img class="player-avatar" :src="info.avatarmedium" />
-      <span class="player-name">
-        {{ info.personaname }}
-      </span>
-    </div>
+  <div
+    class="player-list-title"
+    v-if="!(!playerListData.isLoading && !playerListData.isSuccess)"
+  >
+    最近查询玩家
+  </div>
+  <LoadingComponent v-if="playerListData.isLoading" />
+  <div
+    class="player-card"
+    v-for="info of playerListData.players"
+    @click="emits('clickPlayer', info)"
+  >
+    <img class="player-avatar" :src="info.avatarmedium" />
+    <span class="player-name">
+      {{ info.personaname }}
+    </span>
   </div>
 </template>
 

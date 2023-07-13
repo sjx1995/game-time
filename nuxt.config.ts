@@ -32,7 +32,7 @@ export default defineNuxtConfig({
   },
   vite: {
     esbuild: {
-      drop: ["console", "debugger"],
+      // drop: ["console", "debugger"],
     },
     define: {
       "process.env.DEBUG": false,
