@@ -18,22 +18,22 @@ type IGameTimeDetail = {
 
 type IGetRecentGameTime =
   | {
-    success: boolean;
-    data: {
-      total_count: number;
-      games: IGameTimeDetail[];
-    };
-  }
+      success: boolean;
+      data: {
+        total_count: number;
+        games: IGameTimeDetail[];
+      };
+    }
   | {
-    success: false;
-    errorMessage: string;
-  };
+      success: false;
+      errorMessage: string;
+    };
 
 export default defineEventHandler(
   async (event): Promise<IGetRecentGameTime> => {
     try {
-      const { key, steamid } = getQuery(event);
-      if (!key) throw new Error("参数错误，请点击右上角配置steam web api");
+      const key = process.env.STEAM_KEY;
+      const { steamid } = getQuery(event);
       if (!steamid) throw new Error("参数错误, 缺少要查询对象的id");
       const res = await axios({
         url: "https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v1/",

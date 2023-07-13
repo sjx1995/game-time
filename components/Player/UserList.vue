@@ -20,14 +20,6 @@ const getPlayerList = async () => {
     []
   );
   console.log("recentSearchIds", recentSearchIds.value);
-  const key = localStorage.getItem(StorageNames.WEB_API_KEY);
-  console.log("key", key);
-  if (!key) {
-    playerListData.isLoading = false;
-    playerListData.isSuccess = false;
-    playerListData.errorMessage = "请先设置Web API Key";
-    return;
-  }
   if (recentSearchIds.value.length === 0) {
     playerListData.isLoading = false;
     playerListData.isSuccess = true;
@@ -36,11 +28,9 @@ const getPlayerList = async () => {
   await nextTick(async () => {
     const data = await useFetch("/api/players/info", {
       params: {
-        key,
         ids: recentSearchIds.value,
       },
     });
-    console.log("user list data", data.data.value);
     if (data.data.value?.success) {
       const playerList = data.data.value.data.players;
       console.log(playerList);

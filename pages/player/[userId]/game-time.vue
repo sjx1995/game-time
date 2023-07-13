@@ -4,9 +4,7 @@
  * @Date: 2023-05-21 14:05:15
 -->
 <script lang="ts" setup>
-import { error } from "console";
 import { transMinToHour } from "~/utils";
-import { StorageNames } from "~/utils/enums";
 
 const route = useRoute();
 const router = useRouter();
@@ -37,11 +35,10 @@ const gameTimeData = reactive<{
   },
 });
 
-const getRecentTime = async (key: string) => {
+const getRecentTime = async () => {
   try {
     const data = await useFetch("/api/game-time/recent", {
       params: {
-        key,
         steamid: steam64Id,
       },
     });
@@ -103,11 +100,10 @@ const playerInfo = reactive<{
   errorMessage: "",
 });
 
-const getPlayerInfo = async (key: string) => {
+const getPlayerInfo = async () => {
   try {
     const data = await useFetch("/api/players/info", {
       params: {
-        key,
         ids: steam64Id,
       },
     });
@@ -133,13 +129,9 @@ const getPlayerInfo = async (key: string) => {
 
 onMounted(async () => {
   gameTimeData.isLoading = true;
-  const key = localStorage.getItem(StorageNames.WEB_API_KEY);
-  if (!key) {
-    return;
-  }
 
-  getRecentTime(key);
-  getPlayerInfo(key);
+  getRecentTime();
+  getPlayerInfo();
 });
 
 const formatGameTimeText = (recentTime: number, allTime: number) => {

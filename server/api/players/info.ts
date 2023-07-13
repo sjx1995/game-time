@@ -37,9 +37,8 @@ type IGetPlayerList =
 
 export default defineEventHandler(async (event): Promise<IGetPlayerList> => {
   try {
-    console.log("process环境变量", process.env, process.env.STEAM_KEY);
-    const { key, ids } = getQuery(event);
-    if (!key) throw new Error("参数错误，请点击右上角配置steam web api");
+    const key = process.env.STEAM_KEY;
+    const { ids } = getQuery(event);
     if (!(ids && (ids as Array<string>).length))
       throw new Error("参数错误, 缺少要查询对象的id");
     const res = await axios({
@@ -52,7 +51,6 @@ export default defineEventHandler(async (event): Promise<IGetPlayerList> => {
       },
     });
     return {
-      env: process.env,
       success: true,
       data: res.data.response,
     };
