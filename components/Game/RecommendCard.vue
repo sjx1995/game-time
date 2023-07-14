@@ -13,16 +13,18 @@ defineProps<{
   imgUrl: string;
 }>();
 
+const WRAPPER_WIDTH = 308;
+const WRAPPER_HEIGHT = 176;
 const moveContext = reactive({
   isEnter: false,
   centerX: 0,
   centerY: 0,
   distance: 0,
 });
-const transformValue = computed(() =>
+const cardTransformStyle = computed(() =>
   moveContext.isEnter
     ? `
-      scale3d(1.2, 1.2, 1.2)
+      scale3d(1.3, 1.3, 1.3)
       rotate3d(
         ${moveContext.centerY / 100},
         ${-moveContext.centerX / 100},
@@ -31,13 +33,38 @@ const transformValue = computed(() =>
       )`
     : "scale3d(1, 1, 1) rotate3d(0, 0, 0, 0deg)"
 );
+const glowTransformStyle = computed(() =>
+  moveContext.isEnter
+    ? `
+      radial-gradient(
+        circle at
+        ${moveContext.centerX * 2 + WRAPPER_WIDTH / 2}px
+        ${moveContext.centerY * 2 + WRAPPER_HEIGHT / 2}px,
+        #ffffff55,
+        #0000000f
+      )`
+    : "transparent"
+);
+const shadowTransformStyle = computed(() => {
+  return moveContext.isEnter
+    ? `
+      ${moveContext.centerX / 6}px
+      ${moveContext.centerY / 6}px
+      100px rgba(255, 0, 242, 0.5),
+      ${moveContext.centerX / 7}px
+      ${moveContext.centerY / 7}px
+      40px rgba(255, 0, 242, 0.5)`
+    : "0 0 transparent";
+});
+const wrapperRef = ref<HTMLDivElement | null>(null);
 const rotateToMouse = (e: MouseEvent) => {
-  if (!moveContext.isEnter) return;
-  const { offsetX, offsetY } = e;
-  const wrapperWidth = 308;
-  const wrapperHeight = 176;
-  moveContext.centerX = offsetX - wrapperWidth / 2;
-  moveContext.centerY = offsetY - wrapperHeight / 2;
+  if (!moveContext.isEnter || !wrapperRef.value) return;
+  const { left, top } = wrapperRef.value.getBoundingClientRect();
+  const { pageX, pageY } = e;
+  const absoluteX = pageX - left;
+  const absoluteY = pageY - top;
+  moveContext.centerX = absoluteX - WRAPPER_WIDTH / 2;
+  moveContext.centerY = absoluteY - WRAPPER_HEIGHT / 2;
   moveContext.distance =
     Math.sqrt(moveContext.centerX ** 2 + moveContext.centerY ** 2) * 1.6;
 };
@@ -46,12 +73,16 @@ const rotateToMouse = (e: MouseEvent) => {
   <div class="game-card-container">
     <div
       class="game-card-wrapper"
-      :style="{ transform: transformValue }"
+      :style="{ transform: cardTransformStyle }"
+      ref="wrapperRef"
       @mousemove="rotateToMouse"
       @mouseenter="() => (moveContext.isEnter = true)"
       @mouseleave="() => (moveContext.isEnter = false)"
     >
-      <div class="game-card-shadow"></div>
+      <div
+        class="game-card-shadow"
+        :style="{ 'box-shadow': shadowTransformStyle }"
+      ></div>
       <div class="game-card">
         <img :src="imgUrl" />
         <div class="game-card-info">
@@ -70,9 +101,7 @@ const rotateToMouse = (e: MouseEvent) => {
             </span>
           </div>
         </div>
-        <!-- <div class="loading-container" v-if="!imgLoaded">
-          <LoadingComponent />
-        </div> -->
+        <div class="glow" :style="{ background: glowTransformStyle }"></div>
       </div>
     </div>
   </div>
@@ -85,7 +114,7 @@ const rotateToMouse = (e: MouseEvent) => {
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  perspective: 800px;
+  perspective: 1000px;
   .game-card-wrapper {
     position: relative;
     width: 308px;
@@ -102,10 +131,6 @@ const rotateToMouse = (e: MouseEvent) => {
       box-shadow: 0 0 transparent;
     }
     &:hover {
-      .game-card-shadow {
-        box-shadow: 0 20px 100px rgba(255, 0, 242, 0.5),
-          0 16px 40px rgba(255, 0, 242, 0.5);
-      }
       .game-card-info {
         bottom: 0px !important;
         .title {
@@ -120,14 +145,7 @@ const rotateToMouse = (e: MouseEvent) => {
       transform-style: preserve-3d;
       border-radius: 8px;
       box-shadow: 0 2px 12px -3px rgba(255, 0, 242, 0.5);
-      .loading-container {
-        width: 100%;
-        height: 100%;
-        background: #222;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
+      background: #222;
       img {
         width: 100%;
         height: 100%;
@@ -165,6 +183,19 @@ const rotateToMouse = (e: MouseEvent) => {
             margin-left: 8px;
           }
         }
+      }
+      .glow {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+
+        background-image: radial-gradient(
+          circle at 50% -20%,
+          #ffffff22,
+          #0000000f
+        );
       }
     }
   }
