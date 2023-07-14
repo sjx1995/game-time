@@ -24,7 +24,7 @@ const moveContext = reactive({
 const cardTransformStyle = computed(() =>
   moveContext.isEnter
     ? `
-      scale3d(1.2, 1.2, 1.2)
+      scale3d(1.3, 1.3, 1.3)
       rotate3d(
         ${moveContext.centerY / 100},
         ${-moveContext.centerX / 100},
@@ -45,6 +45,17 @@ const glowTransformStyle = computed(() =>
       )`
     : "transparent"
 );
+const shadowTransformStyle = computed(() => {
+  return moveContext.isEnter
+    ? `
+      ${moveContext.centerX / 6}px
+      ${moveContext.centerY / 6}px
+      100px rgba(255, 0, 242, 0.5),
+      ${moveContext.centerX / 7}px
+      ${moveContext.centerY / 7}px
+      40px rgba(255, 0, 242, 0.5)`
+    : "0 0 transparent";
+});
 const wrapperRef = ref<HTMLDivElement | null>(null);
 const rotateToMouse = (e: MouseEvent) => {
   if (!moveContext.isEnter || !wrapperRef.value) return;
@@ -68,7 +79,10 @@ const rotateToMouse = (e: MouseEvent) => {
       @mouseenter="() => (moveContext.isEnter = true)"
       @mouseleave="() => (moveContext.isEnter = false)"
     >
-      <div class="game-card-shadow"></div>
+      <div
+        class="game-card-shadow"
+        :style="{ 'box-shadow': shadowTransformStyle }"
+      ></div>
       <div class="game-card">
         <img :src="imgUrl" />
         <div class="game-card-info">
@@ -100,7 +114,7 @@ const rotateToMouse = (e: MouseEvent) => {
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  perspective: 800px;
+  perspective: 1000px;
   .game-card-wrapper {
     position: relative;
     width: 308px;
@@ -117,10 +131,6 @@ const rotateToMouse = (e: MouseEvent) => {
       box-shadow: 0 0 transparent;
     }
     &:hover {
-      .game-card-shadow {
-        box-shadow: 0 20px 100px rgba(255, 0, 242, 0.5),
-          0 16px 40px rgba(255, 0, 242, 0.5);
-      }
       .game-card-info {
         bottom: 0px !important;
         .title {
