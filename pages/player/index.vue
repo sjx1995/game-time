@@ -41,7 +41,7 @@ const handleClickPlayer = (info: any) => {
 <template>
   <div>
     <v-btn
-      class="mb-8"
+      class="mb-4"
       prepend-icon="mdi-arrow-left"
       variant="tonal"
       @click="() => router.push('/')"

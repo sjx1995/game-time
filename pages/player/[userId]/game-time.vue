@@ -142,54 +142,64 @@ const formatGameTimeText = (recentTime: number, allTime: number) => {
 </script>
 
 <template>
-  <v-btn
-    class="mb-8"
-    prepend-icon="mdi-arrow-left"
-    variant="tonal"
-    @click="() => router.push('/player')"
-  >
-    返回
-  </v-btn>
+  <div class="game-time-container">
+    <v-btn
+      class="mb-4"
+      prepend-icon="mdi-arrow-left"
+      variant="tonal"
+      @click="() => router.push('/player')"
+    >
+      返回
+    </v-btn>
 
-  <div v-if="gameTimeData.isLoading || playerInfo.isLoading">
-    <LoadingComponent />
-  </div>
+    <div v-if="gameTimeData.isLoading || playerInfo.isLoading">
+      <LoadingComponent />
+    </div>
 
-  <template v-else>
-    <PlayerInfoCard
-      v-if="playerInfo.isSuccess"
-      class="mb-2"
-      :avatar="playerInfo.avatar"
-      :name="playerInfo.name"
-      :playingGame="playerInfo.playingGame"
-      :onlineStatus="playerInfo.onlineStatus"
-      :lastOnline="playerInfo.lastOnline"
-      :recentTime="gameTimeData.data.totalTime"
-    />
-    <v-alert
-      v-else
-      title="没有数据"
-      :text="gameTimeData.errorMessage"
-      type="warning"
-      variant="outlined"
-    ></v-alert>
-
-    <template v-if="gameTimeData.isSuccess">
-      <GameInfoCard
+    <template v-else>
+      <PlayerInfoCard
+        v-if="playerInfo.isSuccess"
         class="mb-2"
-        v-for="item in gameTimeData.data.games"
-        :key="item.name"
-        :title="item.name"
-        :content="formatGameTimeText(item.recentTime, item.allTime)"
-        :appid="item.appid"
+        :avatar="playerInfo.avatar"
+        :name="playerInfo.name"
+        :playingGame="playerInfo.playingGame"
+        :onlineStatus="playerInfo.onlineStatus"
+        :lastOnline="playerInfo.lastOnline"
+        :recentTime="gameTimeData.data.totalTime"
       />
+      <v-alert
+        v-else
+        title="没有数据"
+        :text="playerInfo.errorMessage"
+        type="warning"
+        variant="outlined"
+        class="mb-2"
+      ></v-alert>
+
+      <template v-if="gameTimeData.isSuccess">
+        <GameInfoCard
+          class="mb-2"
+          v-for="item in gameTimeData.data.games"
+          :key="item.name"
+          :title="item.name"
+          :content="formatGameTimeText(item.recentTime, item.allTime)"
+          :appid="item.appid"
+        />
+      </template>
+      <v-alert
+        v-else
+        title="没有数据"
+        :text="gameTimeData.errorMessage"
+        type="warning"
+        variant="outlined"
+      ></v-alert>
     </template>
-    <v-alert
-      v-else
-      title="没有数据"
-      :text="gameTimeData.errorMessage"
-      type="warning"
-      variant="outlined"
-    ></v-alert>
-  </template>
+  </div>
 </template>
+
+<style lang="scss" scoped>
+.game-time-container {
+  width: 950px;
+  margin: 0 auto;
+}
+</style>
