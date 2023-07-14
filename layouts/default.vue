@@ -22,7 +22,7 @@ onMounted(() => {
   <TopSnackbar />
   <v-app :class="{ shake: appStore.isShackBody }">
     <Header />
-    <main class="mt-16 px-10 pt-6">
+    <main class="mt-16 pt-6">
       <slot />
     </main>
     <Footer />
@@ -34,7 +34,15 @@ main {
   max-width: 1280px;
   width: 100%;
   margin: 0 auto;
+  padding-left: 40px;
+  padding-right: 40px;
   min-height: calc(100vh - 64px - 80px - 60px);
+}
+@media screen and (max-width: 600px) {
+  main {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
 }
 .shake {
   animation: shake-animation 0.62s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;

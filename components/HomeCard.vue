@@ -25,7 +25,7 @@ defineProps<{
 .home-card {
   background-color: #222;
   padding: 20px;
-  margin: 16px 24px;
+  margin: 16px 20px;
   display: inline-block;
   width: 260px;
   height: 140px;

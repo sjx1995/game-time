@@ -62,19 +62,19 @@ onMounted(() => {
 </script>
 
 <template>
-  <v-btn
-    class="ml-11"
-    prepend-icon="mdi-arrow-left"
-    variant="tonal"
-    @click="() => router.push('/')"
-  >
-    返回首页
-  </v-btn>
-
   <LoadingComponent v-if="recommends.isLoading" />
 
   <template v-else>
     <div class="recommends" v-if="recommends.isSuccess">
+      <v-btn
+        class="ml-11"
+        prepend-icon="mdi-arrow-left"
+        variant="tonal"
+        @click="() => router.push('/')"
+      >
+        返回首页
+      </v-btn>
+
       <template v-for="(list, key) of recommends" :key="list.id">
         <div class="game-block" v-if="list.items">
           <div class="recommends-title-wrapper">
@@ -130,14 +130,20 @@ onMounted(() => {
     }
   }
 }
-@media screen and (max-width: 1199px) {
+@media screen and (max-width: 1279px) {
   .recommends {
     width: 800px;
+    .recommends-title {
+      right: 4px !important;
+    }
   }
 }
-@media screen and (max-width: 799px) {
+@media screen and (max-width: 879px) {
   .recommends {
     width: 400px;
+    .recommends-title {
+      right: -24px !important;
+    }
   }
 }
 </style>
