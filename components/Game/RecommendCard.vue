@@ -13,13 +13,15 @@ defineProps<{
   imgUrl: string;
 }>();
 
+const WRAPPER_WIDTH = 308;
+const WRAPPER_HEIGHT = 176;
 const moveContext = reactive({
   isEnter: false,
   centerX: 0,
   centerY: 0,
   distance: 0,
 });
-const transformValue = computed(() =>
+const cardTransformStyle = computed(() =>
   moveContext.isEnter
     ? `
       scale3d(1.2, 1.2, 1.2)
@@ -31,13 +33,27 @@ const transformValue = computed(() =>
       )`
     : "scale3d(1, 1, 1) rotate3d(0, 0, 0, 0deg)"
 );
+const glowTransformStyle = computed(() =>
+  moveContext.isEnter
+    ? `
+      radial-gradient(
+        circle at
+        ${moveContext.centerX * 2 + WRAPPER_WIDTH / 2}px
+        ${moveContext.centerY * 2 + WRAPPER_HEIGHT / 2}px,
+        #ffffff55,
+        #0000000f
+      )`
+    : "transparent"
+);
+const wrapperRef = ref<HTMLDivElement | null>(null);
 const rotateToMouse = (e: MouseEvent) => {
-  if (!moveContext.isEnter) return;
-  const { offsetX, offsetY } = e;
-  const wrapperWidth = 308;
-  const wrapperHeight = 176;
-  moveContext.centerX = offsetX - wrapperWidth / 2;
-  moveContext.centerY = offsetY - wrapperHeight / 2;
+  if (!moveContext.isEnter || !wrapperRef.value) return;
+  const { left, top } = wrapperRef.value.getBoundingClientRect();
+  const { pageX, pageY } = e;
+  const absoluteX = pageX - left;
+  const absoluteY = pageY - top;
+  moveContext.centerX = absoluteX - WRAPPER_WIDTH / 2;
+  moveContext.centerY = absoluteY - WRAPPER_HEIGHT / 2;
   moveContext.distance =
     Math.sqrt(moveContext.centerX ** 2 + moveContext.centerY ** 2) * 1.6;
 };
@@ -46,7 +62,8 @@ const rotateToMouse = (e: MouseEvent) => {
   <div class="game-card-container">
     <div
       class="game-card-wrapper"
-      :style="{ transform: transformValue }"
+      :style="{ transform: cardTransformStyle }"
+      ref="wrapperRef"
       @mousemove="rotateToMouse"
       @mouseenter="() => (moveContext.isEnter = true)"
       @mouseleave="() => (moveContext.isEnter = false)"
@@ -70,9 +87,7 @@ const rotateToMouse = (e: MouseEvent) => {
             </span>
           </div>
         </div>
-        <!-- <div class="loading-container" v-if="!imgLoaded">
-          <LoadingComponent />
-        </div> -->
+        <div class="glow" :style="{ background: glowTransformStyle }"></div>
       </div>
     </div>
   </div>
@@ -120,14 +135,7 @@ const rotateToMouse = (e: MouseEvent) => {
       transform-style: preserve-3d;
       border-radius: 8px;
       box-shadow: 0 2px 12px -3px rgba(255, 0, 242, 0.5);
-      .loading-container {
-        width: 100%;
-        height: 100%;
-        background: #222;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
+      background: #222;
       img {
         width: 100%;
         height: 100%;
@@ -165,6 +173,19 @@ const rotateToMouse = (e: MouseEvent) => {
             margin-left: 8px;
           }
         }
+      }
+      .glow {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+
+        background-image: radial-gradient(
+          circle at 50% -20%,
+          #ffffff22,
+          #0000000f
+        );
       }
     }
   }
