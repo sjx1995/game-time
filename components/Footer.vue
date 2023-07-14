@@ -27,9 +27,7 @@ onUnmounted(() => {
       Sunly 🌈
       {{
         "2023" +
-        (new Date().getFullYear() <= 2023
-          ? ""
-          : " - " + new Date().getFullYear())
+        (new Date().getFullYear() <= 2023 ? "" : "-" + new Date().getFullYear())
       }}
     </div>
     <div class="sub-text">
@@ -44,11 +42,11 @@ footer {
   height: 80px;
   margin-top: 60px;
   text-align: center;
-  line-height: 40px;
-  color: #bbb;
+  line-height: 48px;
+  color: #9f9f9f;
   .sub-text {
-    font-size: 14px;
-    line-height: 24px;
+    font-size: 12px;
+    line-height: 12px;
   }
 }
 </style>

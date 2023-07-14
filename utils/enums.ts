@@ -4,7 +4,7 @@
  * @Date: 2023-07-10 10:14:03
  */
 enum StorageNames {
-  WEB_API_KEY = "__STEAM_WEB_API_KEY",
+  WEB_API_KEY = "STEAM_KEY",
   RECENT_USER_IDS = "__recent-search-ids",
 }
 

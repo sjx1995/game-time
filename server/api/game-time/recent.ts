@@ -4,6 +4,7 @@
  * @Date: 2023-05-21 16:17:02
  */
 import axios from "axios";
+import { StorageNames } from "~/utils/enums";
 
 type IGameTimeDetail = {
   appid: number;
@@ -32,7 +33,7 @@ type IGetRecentGameTime =
 export default defineEventHandler(
   async (event): Promise<IGetRecentGameTime> => {
     try {
-      const key = process.env.STEAM_KEY;
+      const key = process.env[StorageNames.WEB_API_KEY];
       const { steamid } = getQuery(event);
       if (!steamid) throw new Error("参数错误, 缺少要查询对象的id");
       const res = await axios({

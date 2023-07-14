@@ -4,6 +4,7 @@
  * @Date: 2023-07-10 04:11:10
  */
 import axios from "axios";
+import { StorageNames } from "~/utils/enums";
 
 export type IPlayerInfo = {
   avatar: string;
@@ -37,8 +38,7 @@ type IGetPlayerList =
 
 export default defineEventHandler(async (event): Promise<IGetPlayerList> => {
   try {
-    const key = process.env.STEAM_KEY;
-    console.log("===key", key);
+    const key = process.env[StorageNames.WEB_API_KEY];
     const { ids } = getQuery(event);
     if (!(ids && (ids as Array<string>).length))
       throw new Error("参数错误, 缺少要查询对象的id");
@@ -52,7 +52,6 @@ export default defineEventHandler(async (event): Promise<IGetPlayerList> => {
       },
     });
     return {
-      key,
       success: true,
       data: res.data.response,
     };
