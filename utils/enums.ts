@@ -18,4 +18,11 @@ enum OnlineStatus {
   "想玩游戏" = 6,
 }
 
-export { StorageNames, OnlineStatus };
+enum IFeaturedCategory {
+  specials = "优惠",
+  coming_soon = "即将推出",
+  top_sellers = "热销商品",
+  new_releases = "新品",
+}
+
+export { StorageNames, OnlineStatus, IFeaturedCategory };

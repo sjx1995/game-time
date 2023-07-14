@@ -31,7 +31,7 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 main {
-  max-width: 1000px;
+  max-width: 1280px;
   width: 100%;
   margin: 0 auto;
   min-height: calc(100vh - 64px - 80px - 60px);

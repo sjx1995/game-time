@@ -9,8 +9,14 @@ const router = useRouter();
 
 <template>
   <HomeCard
+    title="游戏推荐"
+    content="新游 特惠 热销"
+    icon="mdi-controller"
+    @click="() => router.push('/game/recommend')"
+  />
+  <HomeCard
     title="玩家信息"
-    content="获取玩家游戏时间等"
+    content="玩家信息 游戏时间"
     icon="mdi-account-outline"
     @click="() => router.push('/player')"
   />
