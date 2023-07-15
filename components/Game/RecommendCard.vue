@@ -56,10 +56,12 @@ const shadowTransformStyle = computed(() => {
       40px rgba(255, 0, 242, 0.5)`
     : "0 0 transparent";
 });
-const wrapperRef = ref<HTMLDivElement | null>(null);
+const containerRef = ref<HTMLDivElement | null>(null);
 const rotateToMouse = (e: MouseEvent) => {
-  if (!moveContext.isEnter || !wrapperRef.value) return;
-  const { left, top } = wrapperRef.value.getBoundingClientRect();
+  if (!moveContext.isEnter || !containerRef.value) return;
+  let { left, top } = containerRef.value.getBoundingClientRect();
+  left += 46;
+  top += 32;
   const { pageX, pageY } = e;
   const absoluteX = pageX - left;
   const absoluteY = pageY - top;
@@ -70,11 +72,10 @@ const rotateToMouse = (e: MouseEvent) => {
 };
 </script>
 <template>
-  <div class="game-card-container">
+  <div class="game-card-container" ref="containerRef">
     <div
       class="game-card-wrapper"
       :style="{ transform: cardTransformStyle }"
-      ref="wrapperRef"
       @mousemove="rotateToMouse"
       @mouseenter="() => (moveContext.isEnter = true)"
       @mouseleave="() => (moveContext.isEnter = false)"
