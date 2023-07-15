@@ -85,6 +85,7 @@ onMounted(() => {
           <div>
             <GameRecommendCard
               v-for="item of list.items"
+              :app-id="item.id"
               :key="item.id"
               :img-url="item.large_capsule_image"
               :name="item.name"
