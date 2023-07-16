@@ -233,7 +233,6 @@ const handleCheckDetail = () => {
       left: 5%;
       width: 90%;
       height: 90%;
-      transition: all 0.2s ease-out;
       box-shadow: 0 0 transparent;
     }
     &:hover {
