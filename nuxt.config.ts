@@ -7,8 +7,8 @@
 export default defineNuxtConfig({
   css: [
     "vuetify/lib/styles/main.sass",
+    "@chinese-fonts/bxzlzt/dist/标小智龙珠体/result.css",
     "~/assets/css/main.scss",
-    // "@mdi/font/css/materialdesignicons.min.css",
   ],
   postcss: {
     plugins: {

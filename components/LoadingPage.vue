@@ -78,7 +78,7 @@
       text-align: center;
       color: #ff39e8;
       font-size: 24px;
-      font-family: Menlo, Monaco, "Courier New", monospace;
+      // font-family: Menlo, Monaco, "Courier New", monospace;
     }
   }
 }

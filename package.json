@@ -24,6 +24,7 @@
     "vite-plugin-vuetify": "^1.0.2"
   },
   "dependencies": {
+    "@chinese-fonts/bxzlzt": "^1.2.0",
     "@pinia/nuxt": "^0.4.11",
     "@vueuse/nuxt": "^10.1.2",
     "axios": "latest",

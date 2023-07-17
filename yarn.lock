@@ -386,6 +386,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@chinese-fonts/bxzlzt@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "@chinese-fonts/bxzlzt@npm:1.2.0"
+  checksum: 83ee831d7ced6a541117753edc47534e7d06638a5b5e68a0abeebc1a1de0eaf5ece39da143b13231751c53e4a086b61fbda8926e51fa107ef2f7507cf73f6b19
+  languageName: node
+  linkType: hard
+
 "@cloudflare/kv-asset-handler@npm:^0.3.0":
   version: 0.3.0
   resolution: "@cloudflare/kv-asset-handler@npm:0.3.0"
@@ -3190,6 +3197,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "game-time@workspace:."
   dependencies:
+    "@chinese-fonts/bxzlzt": ^1.2.0
     "@mdi/font": ^7.2.96
     "@nuxtjs/style-resources": ^1.2.1
     "@pinia/nuxt": ^0.4.11
