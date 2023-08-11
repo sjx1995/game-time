@@ -8,6 +8,7 @@ import domToImage from "dom-to-image";
 import { toDataURL as generateQrCode } from "qrcode";
 import dayjs from "dayjs";
 import { transMinToHour } from "~/utils";
+import { constants } from "buffer";
 
 const route = useRoute();
 const router = useRouter();
@@ -133,8 +134,10 @@ const getPlayerInfo = async () => {
 onMounted(async () => {
   gameTimeData.isLoading = true;
 
-  getRecentTime();
-  getPlayerInfo();
+  nextTick(() => {
+    getRecentTime();
+    getPlayerInfo();
+  });
 });
 
 const formatGameTimeText = (recentTime: number, allTime: number) => {
