@@ -4,6 +4,9 @@
  * @Date: 2023-05-21 14:05:15
 -->
 <script lang="ts" setup>
+import domToImage from "dom-to-image";
+import { toDataURL as generateQrCode } from "qrcode";
+import dayjs from "dayjs";
 import { transMinToHour } from "~/utils";
 
 const route = useRoute();
@@ -139,61 +142,129 @@ const formatGameTimeText = (recentTime: number, allTime: number) => {
   \u00a0
   总游戏时长: ${transMinToHour(allTime)}`;
 };
+
+const isSaving = ref(false);
+const curTime = ref("");
+const curOriginUrl = ref("");
+const qrCodeUrl = ref("");
+const isCapturing = ref(false);
+const handleSaveCapture = async () => {
+  const ele = document.querySelector("#capture-container");
+  if (ele) {
+    isSaving.value = true;
+    curOriginUrl.value = window.location.href;
+    qrCodeUrl.value = await generateUrlQrCode();
+    curTime.value = dayjs().format("YYYY-MM-DD HH:mm:ss");
+
+    try {
+      isCapturing.value = true;
+      const dataUrl = await domToImage.toPng(ele, { bgcolor: "#efdbff" });
+      isCapturing.value = false;
+      const link = document.createElement("a");
+      link.download = `${playerInfo.name}的最近游玩.png`;
+      link.href = dataUrl;
+      link.click();
+    } finally {
+      isSaving.value = false;
+      qrCodeUrl.value = "";
+    }
+  }
+};
+
+const generateUrlQrCode = async () => {
+  try {
+    return await generateQrCode(window.location.href, {
+      color: {
+        dark: "#121212",
+        light: "#00000000",
+      },
+    });
+  } catch (error) {
+    return "";
+  }
+};
 </script>
 
 <template>
   <div class="game-time-container">
-    <v-btn
-      class="mb-4"
-      prepend-icon="mdi-arrow-left"
-      variant="tonal"
-      @click="() => router.push('/player')"
-    >
-      返回
-    </v-btn>
-
-    <div v-if="gameTimeData.isLoading || playerInfo.isLoading">
-      <LoadingComponent />
+    <div class="px-4">
+      <v-btn
+        prepend-icon="mdi-arrow-left"
+        variant="tonal"
+        @click="() => router.push('/player')"
+      >
+        返回
+      </v-btn>
+      <v-btn
+        class="float-right"
+        variant="tonal"
+        @click="handleSaveCapture"
+        :loading="isSaving"
+      >
+        保存截图
+      </v-btn>
     </div>
 
-    <template v-else>
-      <PlayerInfoCard
-        v-if="playerInfo.isSuccess"
-        class="mb-2"
-        :avatar="playerInfo.avatar"
-        :name="playerInfo.name"
-        :playingGame="playerInfo.playingGame"
-        :onlineStatus="playerInfo.onlineStatus"
-        :lastOnline="playerInfo.lastOnline"
-        :recentTime="gameTimeData.data.totalTime"
-      />
-      <v-alert
-        v-else
-        title="没有数据"
-        :text="playerInfo.errorMessage"
-        type="warning"
-        variant="outlined"
-        class="mb-2"
-      ></v-alert>
+    <div id="capture-container">
+      <div id="info-wrapper" class="pa-4">
+        <template v-if="gameTimeData.isLoading || playerInfo.isLoading">
+          <LoadingComponent />
+        </template>
 
-      <template v-if="gameTimeData.isSuccess">
-        <GameInfoCard
-          class="mb-2"
-          v-for="item in gameTimeData.data.games"
-          :key="item.name"
-          :title="item.name"
-          :content="formatGameTimeText(item.recentTime, item.allTime)"
-          :appid="item.appid"
+        <template v-else>
+          <PlayerInfoCard
+            v-if="playerInfo.isSuccess"
+            class="mb-2"
+            :avatar="playerInfo.avatar"
+            :name="playerInfo.name"
+            :playingGame="playerInfo.playingGame"
+            :onlineStatus="playerInfo.onlineStatus"
+            :lastOnline="playerInfo.lastOnline"
+            :recentTime="gameTimeData.data.totalTime"
+          />
+          <v-alert
+            v-else
+            title="没有数据"
+            :text="playerInfo.errorMessage"
+            type="warning"
+            variant="outlined"
+            class="mb-2"
+          />
+
+          <template v-if="gameTimeData.isSuccess">
+            <GameInfoCard
+              class="mb-2"
+              v-for="item in gameTimeData.data.games"
+              :key="item.name"
+              :title="item.name"
+              :content="formatGameTimeText(item.recentTime, item.allTime)"
+              :appid="item.appid"
+            />
+          </template>
+          <v-alert
+            v-else
+            title="没有数据"
+            :text="gameTimeData.errorMessage"
+            type="warning"
+            variant="outlined"
+          />
+        </template>
+      </div>
+
+      <div class="extra-info pa-4">
+        <div>
+          <div>截图时间：{{ curTime }}</div>
+          <div>更多信息：{{ curOriginUrl }}</div>
+        </div>
+        <img
+          class="qc-code"
+          :src="qrCodeUrl"
+          width="100"
+          height="100"
+          v-show="qrCodeUrl"
         />
-      </template>
-      <v-alert
-        v-else
-        title="没有数据"
-        :text="gameTimeData.errorMessage"
-        type="warning"
-        variant="outlined"
-      ></v-alert>
-    </template>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -201,5 +272,19 @@ const formatGameTimeText = (recentTime: number, allTime: number) => {
 .game-time-container {
   width: 950px;
   margin: 0 auto;
+  #info-wrapper {
+    background-color: rgb(var(--v-theme-background));
+  }
+  .extra-info {
+    color: rgb(var(--v-theme-background));
+    user-select: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    img {
+      border: 1px solid rgb(var(--v-theme-background));
+      border-radius: 4px;
+    }
+  }
 }
 </style>
