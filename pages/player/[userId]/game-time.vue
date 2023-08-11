@@ -138,9 +138,10 @@ onMounted(async () => {
 });
 
 const formatGameTimeText = (recentTime: number, allTime: number) => {
-  return `近两周游戏时长: ${transMinToHour(recentTime)}
-  \u00a0
-  总游戏时长: ${transMinToHour(allTime)}`;
+  return [
+    `近两周游戏时长: ${transMinToHour(recentTime)}`,
+    `总游戏时长: ${transMinToHour(allTime)}`,
+  ];
 };
 
 const isSaving = ref(false);
@@ -152,7 +153,7 @@ const handleSaveCapture = async () => {
   const ele = document.querySelector("#capture-container");
   if (ele) {
     isSaving.value = true;
-    curOriginUrl.value = window.location.href;
+    curOriginUrl.value = window.location.origin;
     qrCodeUrl.value = await generateUrlQrCode();
     curTime.value = dayjs().format("YYYY-MM-DD HH:mm:ss");
 
@@ -201,7 +202,7 @@ const generateUrlQrCode = async () => {
         @click="handleSaveCapture"
         :loading="isSaving"
       >
-        保存截图
+        生成游戏时间卡片
       </v-btn>
     </div>
 
@@ -251,10 +252,10 @@ const generateUrlQrCode = async () => {
         </template>
       </div>
 
-      <div class="extra-info pa-4">
+      <div class="extra-info pa-4" v-show="isSaving">
         <div>
-          <div>截图时间：{{ curTime }}</div>
-          <div>更多信息：{{ curOriginUrl }}</div>
+          <div class="info-text">记录时间：{{ curTime }}</div>
+          <div class="info-text">更多信息：{{ curOriginUrl }}</div>
         </div>
         <img
           class="qc-code"
@@ -270,20 +271,28 @@ const generateUrlQrCode = async () => {
 
 <style lang="scss" scoped>
 .game-time-container {
-  width: 950px;
+  max-width: 950px;
   margin: 0 auto;
-  #info-wrapper {
-    background-color: rgb(var(--v-theme-background));
-  }
-  .extra-info {
-    color: rgb(var(--v-theme-background));
-    user-select: none;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    img {
-      border: 1px solid rgb(var(--v-theme-background));
-      border-radius: 4px;
+  #capture-container {
+    overflow: hidden;
+    #info-wrapper {
+      background-color: rgb(var(--v-theme-background));
+    }
+    .extra-info {
+      color: rgb(var(--v-theme-background));
+      user-select: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      .info-text {
+        white-space: nowrap;
+      }
+      img {
+        border: 1px solid rgb(var(--v-theme-background));
+        border-radius: 4px;
+        margin-top: 12px;
+      }
     }
   }
 }
