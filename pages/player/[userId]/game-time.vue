@@ -8,7 +8,6 @@ import domToImage from "dom-to-image";
 import { toDataURL as generateQrCode } from "qrcode";
 import dayjs from "dayjs";
 import { transMinToHour } from "~/utils";
-import { constants } from "buffer";
 
 const route = useRoute();
 const router = useRouter();
@@ -170,7 +169,7 @@ const handleSaveCapture = async () => {
       link.click();
     } finally {
       isSaving.value = false;
-      qrCodeUrl.value = "";
+      // qrCodeUrl.value = "";
     }
   }
 };
@@ -200,10 +199,12 @@ const generateUrlQrCode = async () => {
         返回
       </v-btn>
       <v-btn
+        append-icon="mdi-crown-circle-outline"
         class="float-right"
         variant="tonal"
         @click="handleSaveCapture"
         :loading="isSaving"
+        v-if="playerInfo.isSuccess"
       >
         生成游戏时间卡片
       </v-btn>
@@ -255,13 +256,14 @@ const generateUrlQrCode = async () => {
         </template>
       </div>
 
-      <div class="extra-info pa-4" v-show="isSaving">
-        <div>
+      <div class="extra-info px-4 pt-4" v-show="isSaving">
+        <div class="mb-4">
+          <div class="info-title">Game Time</div>
           <div class="info-text">记录时间：{{ curTime }}</div>
           <div class="info-text">更多信息：{{ curOriginUrl }}</div>
         </div>
         <img
-          class="qc-code"
+          class="qr-code mb-4"
           :src="qrCodeUrl"
           width="100"
           height="100"
@@ -288,13 +290,17 @@ const generateUrlQrCode = async () => {
       justify-content: space-between;
       align-items: flex-end;
       flex-wrap: wrap;
+      .info-title {
+        font-weight: 700;
+        font-size: 24px;
+        margin-bottom: 8px;
+      }
       .info-text {
         white-space: nowrap;
       }
-      img {
+      img.qr-code {
         border: 1px solid rgb(var(--v-theme-background));
         border-radius: 4px;
-        margin-top: 12px;
       }
     }
   }
