@@ -5,6 +5,7 @@
 -->
 <script lang="ts" setup>
 import { useAppStore } from "~/store/app";
+import ToTop from "~/components/ToTop.vue";
 
 const appStore = useAppStore();
 
@@ -24,6 +25,7 @@ onMounted(() => {
     <Header />
     <main class="mt-16 pt-6">
       <slot />
+      <ToTop />
     </main>
     <Footer />
   </v-app>
