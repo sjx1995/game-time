@@ -13,6 +13,15 @@
 
 ## 功能
 
-- [x] steam畅销、折扣、新游戏
-- [x] 查询玩家信息
-- [x] 查询玩家最近游戏及时长
+### 首页
+
+<img src='./screenshots/home.png' width="800" alt="首页" />
+
+### 游戏推荐
+
+<img src='./screenshots/game-recommend.png' width="800" alt="游戏推荐" />
+
+
+### 玩家最近游戏状态
+
+<img src='./screenshots/player-detail.png' width="800" alt="玩家最近游戏状态" />
