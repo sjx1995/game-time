@@ -7,7 +7,7 @@
   },
   "scripts": {
     "build": "nuxt build",
-    "dev": "nuxt dev --dotenv .env.development",
+    "dev": "nuxt dev --host --dotenv .env.development",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
@@ -21,7 +21,7 @@
     "@types/node": "^18",
     "@types/qrcode": "^1.5.1",
     "autoprefixer": "^10.4.14",
-    "nuxt": "^3.4.3",
+    "nuxt": "^3.7.4",
     "postcss": "^8.4.23",
     "vite-plugin-vuetify": "^1.0.2"
   },
