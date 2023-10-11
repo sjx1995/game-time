@@ -4,52 +4,51 @@
  * @Date: 2023-07-10 22:34:31
 -->
 <script lang="ts" setup>
-import { StorageNames } from "~/utils/enums";
 import type { IPlayerInfo } from "~/server/api/players/info";
 
+const props = defineProps<{
+  title: string;
+  userIds: string[];
+}>();
+
 const playerListData = reactive({
-  isLoading: true,
   isSuccess: false,
   errorMessage: "",
   players: [] as IPlayerInfo[],
 });
 
 const getPlayerList = async () => {
-  const recentSearchIds = useLocalStorage<string[]>(
-    StorageNames.RECENT_USER_IDS,
-    []
-  );
-  console.log("recentSearchIds", recentSearchIds.value);
-  if (recentSearchIds.value.length === 0) {
-    playerListData.isLoading = false;
-    playerListData.isSuccess = true;
-    return;
-  }
   await nextTick(async () => {
     const data = await useFetch("/api/players/info", {
       params: {
-        ids: recentSearchIds.value,
+        ids: props.userIds,
       },
     });
-    console.log("user list", data.data.value);
     if (data.data.value?.success) {
       const playerList = data.data.value.data.players;
-      console.log(playerList);
-      playerListData.isLoading = false;
       playerListData.isSuccess = true;
       playerListData.players = [...playerList];
     } else {
-      playerListData.isLoading = false;
       playerListData.isSuccess = false;
       playerListData.errorMessage = "获取用户信息失败";
     }
   });
 };
 
-onMounted(() => {
-  console.log("mounted player info");
-  getPlayerList();
-});
+watch(
+  () => props.userIds.length,
+  () => {
+    if (props.userIds.length) {
+      getPlayerList();
+    } else {
+      playerListData.isSuccess = false;
+      playerListData.players = [];
+    }
+  },
+  {
+    immediate: true,
+  }
+);
 
 const emits = defineEmits<{
   (event: "clickPlayer", steam64Id: IPlayerInfo): void;
@@ -57,25 +56,23 @@ const emits = defineEmits<{
 </script>
 
 <template>
-  <div
-    class="player-list-title"
-    v-if="
-      !(!playerListData.isLoading && !playerListData.isSuccess) &&
-      playerListData.players.length
-    "
-  >
-    最近查询玩家
-  </div>
-  <LoadingComponent v-if="playerListData.isLoading" />
-  <div
-    class="player-card"
-    v-for="info of playerListData.players"
-    @click="emits('clickPlayer', info)"
-  >
-    <img class="player-avatar" :src="info.avatarmedium" />
-    <span class="player-name">
-      {{ info.personaname }}
-    </span>
+  <div>
+    <div
+      class="player-list-title mt-6"
+      v-show="playerListData.isSuccess && playerListData.players.length"
+    >
+      {{ title }}
+    </div>
+    <div
+      class="player-card"
+      v-for="info of playerListData.players"
+      @click="emits('clickPlayer', info)"
+    >
+      <img class="player-avatar" :src="info.avatarmedium" />
+      <span class="player-name">
+        {{ info.personaname }}
+      </span>
+    </div>
   </div>
 </template>
 

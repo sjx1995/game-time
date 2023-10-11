@@ -10,11 +10,53 @@ import { useAppStore } from "~/store/app";
 const appStore = useAppStore();
 const router = useRouter();
 
+// 获取好友列表
+let steamId = null as null | string;
+const showLoginTip = ref(false);
+const friendIds = ref<string[]>([]);
+const getFriends = async () => {
+  const data = await useFetch("/api/players/friends", {
+    params: {
+      steamid: steamId,
+    },
+  });
+  const res = data.data.value;
+  if (res?.success) {
+    friendIds.value = res.data.friendslist.friends.map(
+      (person) => person.steamid
+    );
+  }
+};
+onMounted(() => {
+  steamId = sessionStorage.getItem(StorageNames.SESSION_STEAM_ID);
+  if (steamId) {
+    nextTick(() => {
+      getFriends();
+    });
+  } else {
+    showLoginTip.value = true;
+  }
+});
+
+// 监听用户退出状态
+const userSteamId = useSessionStorage(StorageNames.SESSION_STEAM_ID, "");
+watch(
+  () => userSteamId.value,
+  () => {
+    if (!userSteamId.value) {
+      friendIds.value = [];
+      showLoginTip.value = true;
+    }
+  }
+);
+
+// 获取最近的玩家的id
 const recentSearchIds = useLocalStorage<string[]>(
   StorageNames.RECENT_USER_IDS,
   []
 );
 
+// 通过steamID查询玩家信息
 const steam64id = ref("");
 const handleQuery2WeekGameTime = () => {
   if (steam64id.value === "") {
@@ -22,7 +64,6 @@ const handleQuery2WeekGameTime = () => {
     appStore.shackBody();
     return;
   }
-
   const idx = recentSearchIds.value.findIndex(
     (item) => item === steam64id.value
   );
@@ -33,6 +74,7 @@ const handleQuery2WeekGameTime = () => {
   router.push(`/player/${steam64id.value}/game-time`);
 };
 
+// 查询具体玩家信息
 const handleClickPlayer = (info: any) => {
   router.push(`/player/${info.steamid}/game-time`);
 };
@@ -49,9 +91,32 @@ const handleClickPlayer = (info: any) => {
       返回首页
     </v-btn>
 
-    <PlayerUserList @click-player="handleClickPlayer" />
+    <v-alert
+      v-if="showLoginTip"
+      title="登录以查看你的好友数据"
+      text='点击右上角的"登录STEAM"，即可查看你的所有好友数据'
+      type="info"
+      variant="outlined"
+      class="mb-2"
+    />
 
-    <div class="search-player-title mt-4">通过64位ID查询玩家信息</div>
+    <ClientOnly>
+      <PlayerUserList
+        title="好友列表"
+        :user-ids="friendIds"
+        @click-player="handleClickPlayer"
+      />
+    </ClientOnly>
+
+    <ClientOnly>
+      <PlayerUserList
+        title="最近查询玩家"
+        :user-ids="recentSearchIds"
+        @click-player="handleClickPlayer"
+      />
+    </ClientOnly>
+
+    <div class="search-player-title mt-6">通过64位ID查询玩家信息</div>
     <v-text-field
       label="玩家的64位ID"
       v-model:model-value="steam64id"
