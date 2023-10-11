@@ -11,7 +11,7 @@ const playerListData = reactive({
   isLoading: true,
   isSuccess: false,
   errorMessage: "",
-  players: [],
+  players: [] as IPlayerInfo[],
 });
 
 const getPlayerList = async () => {
@@ -59,7 +59,10 @@ const emits = defineEmits<{
 <template>
   <div
     class="player-list-title"
-    v-if="!(!playerListData.isLoading && !playerListData.isSuccess)"
+    v-if="
+      !(!playerListData.isLoading && !playerListData.isSuccess) &&
+      playerListData.players.length
+    "
   >
     最近查询玩家
   </div>
@@ -80,7 +83,7 @@ const emits = defineEmits<{
 .player-list-title {
   font-size: 1.75rem;
   font-weight: 400;
-  line-height: 4rem;
+  margin-bottom: 0.25rem;
 }
 .player-card {
   height: 32px;
