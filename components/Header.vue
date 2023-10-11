@@ -10,12 +10,13 @@ const router = useRouter();
 
 // 小屏幕隐藏部分header元素
 const { width } = useWindowSize();
-console.log(width.value);
 const tooNarrow = computed(() => width.value < 650);
 
 const handleToHome = () => {
   router.push("/");
 };
+
+// https://steamcommunity.com/id/${steamID}/friends/
 
 // 读取用户信息
 const steamId = useSessionStorage(StorageNames.SESSION_STEAM_ID, "");

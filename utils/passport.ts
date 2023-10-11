@@ -5,9 +5,14 @@
  */
 import Steam from "node-steam-openid";
 
+const ip =
+  process.env.NODE_ENV === "development"
+    ? "192.168.10.180:3000"
+    : "gametime.sunly.in";
+
 const steamPassport = new Steam({
-  realm: "http://192.168.10.180:3000", // Site name displayed to users on logon
-  returnUrl: "http://192.168.10.180:3000/auth/steam/authenticate", // Your return route
+  realm: `http://${ip}`,
+  returnUrl: `http://${ip}/auth/steam/authenticate`, // Your return route
   apiKey: "5A8CBF81400D9B5F95755F5821E28150", // Steam API key
 });
 
