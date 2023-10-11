@@ -55,6 +55,13 @@ const recentSearchIds = useLocalStorage<string[]>(
   StorageNames.RECENT_USER_IDS,
   []
 );
+const setRecentId = (id: string) => {
+  const idx = recentSearchIds.value.findIndex((item) => item === id);
+  if (idx !== -1) {
+    recentSearchIds.value.splice(idx, 1);
+  }
+  recentSearchIds.value.unshift(id);
+};
 
 // 通过steamID查询玩家信息
 const steam64id = ref("");
@@ -64,19 +71,15 @@ const handleQuery2WeekGameTime = () => {
     appStore.shackBody();
     return;
   }
-  const idx = recentSearchIds.value.findIndex(
-    (item) => item === steam64id.value
-  );
-  if (idx !== -1) {
-    recentSearchIds.value.splice(idx, 1);
-  }
-  recentSearchIds.value.unshift(steam64id.value);
+  setRecentId(steam64id.value);
   router.push(`/player/${steam64id.value}/game-time`);
 };
 
 // 查询具体玩家信息
 const handleClickPlayer = (info: any) => {
-  router.push(`/player/${info.steamid}/game-time`);
+  const { steamid } = info;
+  setRecentId(steamid);
+  router.push(`/player/${steamid}/game-time`);
 };
 </script>
 
