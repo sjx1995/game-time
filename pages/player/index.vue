@@ -51,7 +51,7 @@ const handleClickPlayer = (info: any) => {
 
     <PlayerUserList @click-player="handleClickPlayer" />
 
-    <div class="search-player-title mt-4">查询新玩家信息</div>
+    <div class="search-player-title mt-4">通过64位ID查询玩家信息</div>
     <v-text-field
       label="玩家的64位ID"
       v-model:model-value="steam64id"
