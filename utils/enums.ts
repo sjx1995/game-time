@@ -6,6 +6,9 @@
 enum StorageNames {
   WEB_API_KEY = "STEAM_KEY",
   RECENT_USER_IDS = "__recent-search-ids",
+  SESSION_STEAM_ID = "__session-steam-id",
+  SESSION_STEAM_NAME = "__session-steam-name",
+  SESSION_STEAM_IMG = "__session-steam-img",
 }
 
 enum OnlineStatus {

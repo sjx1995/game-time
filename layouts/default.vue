@@ -22,7 +22,9 @@ onMounted(() => {
   <LoadingPage v-if="showLoading" />
   <TopSnackbar />
   <v-app :class="{ shake: appStore.isShackBody }">
-    <Header />
+    <ClientOnly>
+      <Header />
+    </ClientOnly>
     <main class="mt-16 pt-6">
       <slot />
       <ToTop />

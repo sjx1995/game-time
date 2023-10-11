@@ -163,7 +163,7 @@ const handleCheckDetail = () => {
             </div>
             <div class="info" v-if="cardData.tags.length">
               标签:
-              <span class="tag" v-for="tag of cardData.tags" :key="dev">
+              <span class="tag" v-for="tag of cardData.tags" :key="tag">
                 {{ tag }}
               </span>
             </div>
