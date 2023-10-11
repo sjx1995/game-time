@@ -144,6 +144,7 @@ const handleClickPlayer = (info: any) => {
               <a
                 class="text-blue-500 underline"
                 href="https://steamid.io/lookup/"
+                target="_blank"
                 >STEAM I/O</a
               >
               查看64位steam id:

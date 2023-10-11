@@ -48,7 +48,8 @@ const getRecentTime = async () => {
     if (data.data.value?.success) {
       if (data.data.value.data.total_count === 0) {
         gameTimeData.isSuccess = false;
-        gameTimeData.errorMessage = "该用户近两周没有游戏记录";
+        gameTimeData.errorMessage =
+          "该用户近两周没有游戏记录或没有公开个人资料";
         return;
       }
       let totalTime = 0;
