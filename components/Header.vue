@@ -23,6 +23,16 @@ const steamName = useSessionStorage(StorageNames.SESSION_STEAM_NAME, "");
 const steamImg = useSessionStorage(StorageNames.SESSION_STEAM_IMG, "");
 const isLogin = computed(() => steamId.value !== "");
 const handleClickPlayer = () => {
+  let players = localStorage.getItem(StorageNames.RECENT_USER_IDS);
+  if (players) {
+    let playerList = JSON.parse(players) as string[];
+    playerList = playerList.filter((id) => id !== steamId.value);
+    playerList.unshift(steamId.value);
+    localStorage.setItem(
+      StorageNames.RECENT_USER_IDS,
+      JSON.stringify(playerList)
+    );
+  }
   router.push(`/player/${steamId.value}/game-time`);
 };
 
