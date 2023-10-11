@@ -12,11 +12,10 @@ const router = useRouter();
 const { width } = useWindowSize();
 const tooNarrow = computed(() => width.value < 650);
 
+// 返回首页
 const handleToHome = () => {
   router.push("/");
 };
-
-// https://steamcommunity.com/id/${steamID}/friends/
 
 // 读取用户信息
 const steamId = useSessionStorage(StorageNames.SESSION_STEAM_ID, "");
@@ -37,6 +36,7 @@ const handleClickPlayer = () => {
   router.push(`/player/${steamId.value}/game-time`);
 };
 
+// 退出
 const handleLogout = () => {
   steamId.value = "";
   steamName.value = "";
