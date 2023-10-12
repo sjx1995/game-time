@@ -13,15 +13,24 @@
 
 ## 功能
 
+- 热销、优惠、新游戏推荐
+- 登陆查看好友游戏信息
+- 导出最近游戏状态截图
+
+## 截图
+
 ### 首页
 
-<img src='./screenshots/home.png' width="800" alt="首页" />
+<img src='./screenshots/home.png' alt="首页" />
 
 ### 游戏推荐
 
-<img src='./screenshots/game-recommend.png' width="800" alt="游戏推荐" />
+<img src='./screenshots/recommend-games.png' alt="游戏推荐" />
 
+### 好友列表
+
+<img src='./screenshots/friends-list.png' alt="好友列表" />
 
 ### 玩家最近游戏状态
 
-<img src='./screenshots/player-detail.png' width="800" alt="玩家最近游戏状态" />
+<img src='./screenshots/game-time.png' alt="玩家最近游戏状态" />
