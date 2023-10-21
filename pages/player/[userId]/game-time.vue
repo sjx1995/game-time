@@ -12,6 +12,10 @@ import { transMinToHour } from "~/utils";
 const route = useRoute();
 const router = useRouter();
 
+definePageMeta({
+  title: "玩家游戏信息",
+});
+
 const steam64Id = route.params.userId.toString();
 const gameTimeData = reactive<{
   isLoading: boolean;

@@ -6,6 +6,10 @@
 <script setup lang="ts">
 import { StorageNames } from "~/utils/enums";
 
+definePageMeta({
+  title: "跳转中",
+});
+
 const route = useRoute();
 const router = useRouter();
 

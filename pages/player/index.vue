@@ -10,6 +10,10 @@ import { useAppStore } from "~/store/app";
 const appStore = useAppStore();
 const router = useRouter();
 
+definePageMeta({
+  title: "查询玩家信息",
+});
+
 // 获取好友列表
 let steamId = null as null | string;
 const showLoginTip = ref(false);

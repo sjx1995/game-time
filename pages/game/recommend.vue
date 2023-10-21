@@ -8,6 +8,10 @@ import { IFeaturedCategory } from "~/utils/enums";
 
 const router = useRouter();
 
+definePageMeta({
+  title: "游戏推荐",
+});
+
 const recommends = reactive({
   specials: [],
   coming_soon: [],

@@ -8,9 +8,26 @@ import { useAppStore } from "~/store/app";
 import ToTop from "~/components/ToTop.vue";
 
 const appStore = useAppStore();
+const route = useRoute();
+
+useSeoMeta({
+  title: "GAME TIME",
+  description: "查看Steam游戏信息",
+});
+
+watch(
+  () => route.meta?.title,
+  () => {
+    useHead({
+      title: `${route.meta.title ? route.meta.title + "丨" : ""}GAME TIME`,
+    });
+  },
+  {
+    immediate: true,
+  }
+);
 
 const showLoading = ref(true);
-
 onMounted(() => {
   nextTick(() => {
     showLoading.value = false;
